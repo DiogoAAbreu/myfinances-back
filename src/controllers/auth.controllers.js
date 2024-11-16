@@ -1,5 +1,6 @@
 import db from '../db/connection.js';
 import bcrypt from 'bcrypt';
+import { v4 as uuid } from 'uuid'
 
 async function createUser(req, res) {
     const { name, email, password } = res.locals.newUser;
@@ -21,7 +22,29 @@ async function createUser(req, res) {
     }
 }
 
+async function createSession(req, res) {
+    const { userId } = res.locals;
+
+    try {
+        const token = uuid();
+
+        const newSession = {
+            token,
+            userId,
+            aactive: true
+        }
+
+        await db.collection('sessions').insertOne(newSession);
+
+        return res.status(201).send(token);
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send({ message: 'Erro interno do servidor.' });
+    }
+}
+
 export {
     createUser,
+    createSession,
 
 }

@@ -1,4 +1,4 @@
-import { newUserSchema } from '../schemas/auth.schemas.js';
+import { signUpSchema } from '../schemas/auth.schemas.js';
 import db from '../db/connection.js';
 import bcrypt from 'bcrypt';
 
@@ -15,7 +15,7 @@ async function verifyNewUser(req, res, next) {
         password
     }
 
-    const validNewUser = newUserSchema.validate(newUser, { abortEarly: false });
+    const validNewUser = signUpSchema.validate(newUser, { abortEarly: false });
 
     if (validNewUser.error) {
         return res.status(422).send({ message: 'Verifique seus dados.' });
@@ -58,5 +58,6 @@ async function verifyUser(req, res, next) {
 
 export {
     verifyNewUser,
+    verifyUser,
 
 }
