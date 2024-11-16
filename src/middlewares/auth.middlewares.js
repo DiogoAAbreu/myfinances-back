@@ -1,10 +1,11 @@
 import { newUserSchema } from '../schemas/auth.schemas.js'
+import db from '../db/connection.js'
 
 async function verifyNewUser(req, res, next) {
     const { name, email, password, confirmPassword } = req.body;
 
     if (password !== confirmPassword) {
-        return res.status(422).send({ message: 'passwords are not the same' });
+        return res.status(422).send({ message: 'As senhas são divergentes.' });
     }
 
     const newUser = {
@@ -16,9 +17,13 @@ async function verifyNewUser(req, res, next) {
     const validNewUser = newUserSchema.validate(newUser, { abortEarly: false });
 
     if (validNewUser.error) {
-        const errors = validNewUser.error.details.map(error => error.message);
+        return res.status(422).send({ message: 'Verifique seus dados.' });
+    }
 
-        return res.status(422).send(errors);
+    const emailExists = await db.collection('users').findOne({ email: email });
+
+    if (emailExists) {
+        return res.status(400).send({ message: 'E-mail já cadastrado.' })
     }
 
     res.locals.newUser = newUser;
