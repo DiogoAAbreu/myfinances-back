@@ -31,7 +31,7 @@ async function createSession(req, res) {
         const newSession = {
             token,
             userId,
-            aactive: true
+            active: true
         }
 
         await db.collection('sessions').insertOne(newSession);
