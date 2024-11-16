@@ -17,8 +17,7 @@ async function createUser(req, res) {
 
         return res.sendStatus(201);
     } catch (error) {
-        console.log(error)
-        return sendStatus(500);
+        return res.status(500).send({ message: 'Erro interno do servidor.' });
     }
 }
 

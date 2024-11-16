@@ -1,5 +1,6 @@
-import { newUserSchema } from '../schemas/auth.schemas.js'
-import db from '../db/connection.js'
+import { newUserSchema } from '../schemas/auth.schemas.js';
+import db from '../db/connection.js';
+import bcrypt from 'bcrypt';
 
 async function verifyNewUser(req, res, next) {
     const { name, email, password, confirmPassword } = req.body;
@@ -29,6 +30,30 @@ async function verifyNewUser(req, res, next) {
     res.locals.newUser = newUser;
 
     next();
+}
+
+async function verifyUser(req, res, next) {
+    const { email, password } = req.body;
+
+    try {
+        const user = await db.collection('users').findOne({ email: email });
+
+        if (!user) {
+            return res.status(400).send({ message: 'Usuário ou senha inválidos' });
+        }
+
+        const validPassword = await bcrypt.compare(password, user.password);
+
+        if (!validPassword) {
+            return res.status(400).send({ message: 'Usuário ou senha inválidos' });
+        }
+
+        res.locals.userId = user._id;
+
+        next();
+    } catch (error) {
+        return res.status(500).send({ message: 'Erro interno do servidor.' })
+    }
 }
 
 export {
