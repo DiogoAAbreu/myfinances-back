@@ -1,4 +1,4 @@
-import { signUpSchema } from '../schemas/auth.schemas.js';
+import { signUpSchema, signInSchema } from '../schemas/auth.schemas.js';
 import db from '../db/connection.js';
 import bcrypt from 'bcrypt';
 
@@ -36,6 +36,12 @@ async function verifyUser(req, res, next) {
     const { email, password } = req.body;
 
     try {
+        const validUser = signInSchema.validate({ email, password });
+
+        if (validUser.error) {
+            return res.status(422).send({ message: 'Dados inválidos.' });
+        }
+
         const user = await db.collection('users').findOne({ email: email });
 
         if (!user) {
