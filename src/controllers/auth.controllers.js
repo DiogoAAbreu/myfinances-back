@@ -38,7 +38,6 @@ async function createSession(req, res) {
 
         return res.status(201).send(token);
     } catch (error) {
-        console.log(error)
         return res.status(500).send({ message: 'Erro interno do servidor.' });
     }
 }
