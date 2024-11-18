@@ -42,6 +42,10 @@ async function createSession(req, res) {
     }
 }
 
+async function getUserByToken(req, res) {
+
+}
+
 export {
     createUser,
     createSession,

@@ -62,6 +62,20 @@ async function verifyUser(req, res, next) {
     }
 }
 
+async function verifyToken(req, res, next) {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+
+    const session = await db.collection('sessions').findOne({ token: token });
+
+    if (!session || !session.active) {
+        return res.sendStatus(401);
+    }
+
+    res.locals.userId = session.userId;
+
+    next();
+}
+
 export {
     verifyNewUser,
     verifyUser,
