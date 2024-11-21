@@ -1,13 +1,14 @@
 import db from '../db/connection.js';
 
-async function createNewDeposit(req, res) {
+async function createNewTransaction(req, res) {
     const { userId } = res.locals;
-    const { value, description } = req.body;
+    const { value, description, type } = req.body;
 
     try {
         const newTransaction = {
             userId,
             value,
+            type,
             description,
             date: Date.now()
         }
