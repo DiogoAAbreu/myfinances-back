@@ -1,28 +1,24 @@
 import db from '../db/connection.js';
 
 async function createNewTransaction(req, res) {
-    const { userId } = res.locals;
-    const { value, description, type } = req.body;
+    const { userId, transactionData } = res.locals;
 
     try {
         const newTransaction = {
+            ...transactionData,
             userId,
-            value,
-            type,
-            description,
             date: Date.now()
         }
 
         await db.collection('transactions').insertOne({ newTransaction });
 
-        return res.sendStatus(201);
+        return res.status(201).send(newTransaction);
     } catch (error) {
-        console.log(error)
         return res.status(500).send({ message: 'Erro interno do servidor.' });
     }
 }
 
 export {
-    createNewDeposit,
+    createNewTransaction,
 
 }

@@ -9,13 +9,14 @@ async function verifyTransaction(req, res, next) {
         value
     }
 
-    const validDeposit = createTransactionSchema.valid(depositData);
+    const validTransaction = createTransactionSchema.validate(transactionData, { abortEarly: false });
 
-    if (validDeposit.error) {
+    if (validTransaction.error) {
+        console.log(validTransaction.error.details)
         return res.status(422).send({ message: 'Verifique as informações e tente novamente!' });
     }
 
-    res.locals.depositData = transactionData;
+    res.locals.transactionData = transactionData;
 
     next()
 }
