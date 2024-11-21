@@ -1,9 +1,13 @@
 import { createTransactionSchema } from "../schemas/transactions.schemas.js";
 
-async function verifyDeposit(req, res, next) {
-    const { description, value } = req.body;
+async function verifyTransaction(req, res, next) {
+    const { description, type, value } = req.body;
 
-    const depositData = { description, value }
+    const transactionData = {
+        description,
+        type,
+        value
+    }
 
     const validDeposit = createTransactionSchema.valid(depositData);
 
@@ -11,7 +15,7 @@ async function verifyDeposit(req, res, next) {
         return res.status(422).send({ message: 'Verifique as informações e tente novamente!' });
     }
 
-    res.locals.depositData = depositData;
+    res.locals.depositData = transactionData;
 
     next()
 }
