@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.use(verifyToken);
 
-router.post('/deposit', verifyTransaction, createNewTransaction);
+router.post('/transaction', verifyTransaction, createNewTransaction);
 
 export default router;
