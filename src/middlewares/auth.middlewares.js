@@ -79,5 +79,6 @@ async function verifyToken(req, res, next) {
 export {
     verifyNewUser,
     verifyUser,
+    verifyToken,
 
 }
