@@ -1,13 +1,12 @@
 import express from "express";
 import { verifyToken } from "../middlewares/auth.middlewares.js";
-import { verifyDeposit } from "../middlewares/transactions.middlewares.js";
-import { createNewDeposit } from "../controllers/transactions.controllers.js";
+import { verifyTransaction } from "../middlewares/transactions.middlewares.js";
+import { createNewTransaction } from "../controllers/transactions.controllers.js";
 
 const router = express.Router();
 
 router.use(verifyToken);
 
-router.post('/deposit', verifyDeposit, createNewDeposit);
-router.post('/withdraw',);
+router.post('/deposit', verifyTransaction, createNewTransaction);
 
 export default router;

@@ -21,6 +21,6 @@ async function verifyTransaction(req, res, next) {
 }
 
 export {
-    verifyDeposit,
+    verifyTransaction,
 
 }
