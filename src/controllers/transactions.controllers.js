@@ -10,7 +10,7 @@ async function createNewTransaction(req, res) {
             date: Date.now()
         }
 
-        await db.collection('transactions').insertOne({ newTransaction });
+        await db.collection('transactions').insertOne(newTransaction);
 
         return res.status(201).send(newTransaction);
     } catch (error) {
