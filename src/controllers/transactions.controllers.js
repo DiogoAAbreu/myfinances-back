@@ -1,11 +1,11 @@
 import db from '../db/connection.js';
-import { convertMoneyToInteger } from '../utils/money.utils.js'
 
 async function createNewTransaction(req, res) {
     const { userId, transactionData } = res.locals;
 
     try {
-        transactionData.value = convertMoneyToInteger(transactionData.value);
+        transactionData.value = transactionData.value * 100;
+
         const newTransaction = {
             ...transactionData,
             userId,
