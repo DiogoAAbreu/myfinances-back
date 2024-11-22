@@ -35,8 +35,39 @@ async function getTransactions(req, res) {
     }
 }
 
+async function getTransactionsBalance(req, res) {
+    const { userId } = res.locals;
+
+    try {
+        const withdrawTransactions = await db.collection('transactions').find({
+            $and: [
+                { type: 'withdraw' },
+                { userId }]
+        }).toArray()
+
+        const depositTransactions = await db.collection('transactions').find({
+            $and: [
+                { type: 'deposit' },
+                { userId }]
+        }).toArray()
+
+        const totalAmountWithdrawn = withdrawTransactions.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.value;
+        }, 0);
+
+        const totalAmountDeposited = depositTransactions.reduce((accumulator, currentValue) => {
+            return accumulator + currentValue.value;
+        }, 0);
+
+        return res.status(200).send({ totalAmountDeposited, totalAmountWithdrawn });
+    } catch (error) {
+        return res.status(500).send({ message: 'Erro interno do servidor.' });
+    }
+}
+
 export {
     createNewTransaction,
     getTransactions,
+    getTransactionsBalance,
 
 }
