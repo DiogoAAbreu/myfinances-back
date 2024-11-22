@@ -1,5 +1,5 @@
 function convertMoneyToInteger(value) {
-    const intMoney = (value * 100).toFixed(2)
+    const intMoney = (value * 100);
 
     return intMoney;
 }
