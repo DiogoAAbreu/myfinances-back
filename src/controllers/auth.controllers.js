@@ -42,8 +42,23 @@ async function createSession(req, res) {
     }
 }
 
+async function disableSession(req, res) {
+    const token = req.headers.authorization?.replace('Bearer ', '');
+
+    try {
+        await db.collection('sessions').findOneAndUpdate(
+            { token },
+            { $set: { active: false } });
+
+        return res.sendStatus(200);
+    } catch (error) {
+        return res.status(500).send({ message: 'Erro interno do servidor.' });
+    }
+}
+
 export {
     createUser,
     createSession,
+    disableSession,
 
 }
