@@ -1,4 +1,4 @@
-import db from '../db/connection/js'
+import db from '../db/connection.js'
 
 async function getUserById(req, res) {
     const { userId } = res.locals;
@@ -12,4 +12,9 @@ async function getUserById(req, res) {
     } catch (error) {
         return res.status(500).send({ message: 'Erro interno do servidor.' });
     }
+}
+
+export {
+    getUserById,
+
 }
