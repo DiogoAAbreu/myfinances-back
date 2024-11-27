@@ -1,4 +1,5 @@
 import db from '../db/connection.js';
+import { ObjectId } from 'mongodb';
 
 async function createNewTransaction(req, res) {
     const { userId, transactionData } = res.locals;
@@ -73,9 +74,23 @@ async function getTransactionsBalance(req, res) {
     }
 }
 
+async function deleteTransaction(req, res) {
+    const { id } = req.params;
+
+    try {
+        await db.collection('transactions').updateOne({ _id: new ObjectId(id) }, { $set: { active: false } });
+
+        return res.sendStatus(200);
+    } catch (error) {
+        console.log(error)
+        return res.status(500).send({ message: 'Erro interno do servidor.' });
+    }
+}
+
 export {
     createNewTransaction,
     getTransactions,
     getTransactionsBalance,
+    deleteTransaction,
 
 }
