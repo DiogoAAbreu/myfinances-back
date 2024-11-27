@@ -9,7 +9,8 @@ async function createNewTransaction(req, res) {
         const newTransaction = {
             ...transactionData,
             userId,
-            date: Date.now()
+            date: Date.now(),
+            active: true
         }
 
         await db.collection('transactions').insertOne(newTransaction);
