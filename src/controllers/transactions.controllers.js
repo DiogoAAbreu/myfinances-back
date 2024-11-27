@@ -26,8 +26,14 @@ async function getTransactions(req, res) {
 
     {
         try {
-            console.log(userId)
-            const transactions = await db.collection('transactions').find({ userId }).toArray();
+            const transactions = await db.collection('transactions')
+                .find({
+                    $and: [
+                        { active: true },
+                        { userId }
+                    ]
+                })
+                .toArray();
 
             return res.status(200).send(transactions);
         } catch (error) {
@@ -40,11 +46,12 @@ async function getTransactionsBalance(req, res) {
     const { userId } = res.locals;
 
     try {
-        const withdrawTransactions = await db.collection('transactions').find({
-            $and: [
-                { type: 'withdraw' },
-                { userId }]
-        }).toArray()
+        const withdrawTransactions = await db.collection('transactions')
+            .find({
+                $and: [
+                    { type: 'withdraw' },
+                    { userId }]
+            }).toArray()
 
         const depositTransactions = await db.collection('transactions').find({
             $and: [
