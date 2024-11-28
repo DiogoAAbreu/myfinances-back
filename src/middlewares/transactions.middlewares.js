@@ -1,3 +1,5 @@
+import { ObjectId } from "mongodb";
+import db from "../db/connection.js";
 import { createTransactionSchema } from "../schemas/transactions.schemas.js";
 
 async function verifyTransaction(req, res, next) {
@@ -19,6 +21,29 @@ async function verifyTransaction(req, res, next) {
     res.locals.transactionData = transactionData;
 
     next()
+}
+
+async function verifyTransactionOwer(req, res, next) {
+    const { id } = req.params;
+    const { userId } = res.locals;
+
+    try {
+        const transaction = await db.collection('transactions')
+            .findOne({
+                $and: [
+                    { userId },
+                    { _id: new ObjectId(id) }
+                ]
+            })
+
+        if (!transaction) {
+            return res.sendStatus(400);
+        }
+
+        next();
+    } catch (error) {
+        return res.status(500).send({ message: 'Erro interno do servidor.' });
+    }
 }
 
 export {
