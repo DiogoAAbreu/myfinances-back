@@ -37,7 +37,7 @@ async function verifyTransactionOwer(req, res, next) {
             })
 
         if (!transaction) {
-            return res.sendStatus(400);
+            return res.status(400).send({ message: 'Tente novamente mais tarde.' });
         }
 
         next();
