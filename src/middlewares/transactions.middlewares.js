@@ -48,5 +48,6 @@ async function verifyTransactionOwer(req, res, next) {
 
 export {
     verifyTransaction,
+    verifyTransactionOwer
 
 }
