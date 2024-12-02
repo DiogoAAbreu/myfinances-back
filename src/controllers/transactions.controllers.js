@@ -1,5 +1,6 @@
 import db from '../db/connection.js';
 import { ObjectId } from 'mongodb';
+import { sumTransactionsValues } from '../utils/transactions.utils.js'
 
 async function createNewTransaction(req, res) {
     const { userId, transactionData } = res.locals;
@@ -60,13 +61,9 @@ async function getTransactionsBalance(req, res) {
                 { userId }]
         }).toArray()
 
-        const totalAmountWithdrawn = withdrawTransactions.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.value;
-        }, 0);
+        const totalAmountWithdrawn = sumTransactionsValues(withdrawTransactions);
 
-        const totalAmountDeposited = depositTransactions.reduce((accumulator, currentValue) => {
-            return accumulator + currentValue.value;
-        }, 0);
+        const totalAmountDeposited = sumTransactionsValues(depositTransactions);
 
         return res.status(200).send({ totalAmountDeposited, totalAmountWithdrawn });
     } catch (error) {
