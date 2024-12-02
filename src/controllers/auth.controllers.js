@@ -46,7 +46,7 @@ async function disableSession(req, res) {
     const token = req.headers.authorization?.replace('Bearer ', '');
 
     try {
-        await db.collection('sessions').findOneAndUpdate(
+        await db.collection('sessions').updateOne(
             { token },
             { $set: { active: false } });
 
