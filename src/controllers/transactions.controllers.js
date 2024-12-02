@@ -52,12 +52,14 @@ async function getTransactionsBalance(req, res) {
             .find({
                 $and: [
                     { type: 'withdraw' },
+                    { active: true },
                     { userId }]
             }).toArray()
 
         const depositTransactions = await db.collection('transactions').find({
             $and: [
                 { type: 'deposit' },
+                { active: true },
                 { userId }]
         }).toArray()
 
