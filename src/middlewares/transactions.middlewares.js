@@ -14,7 +14,6 @@ async function verifyTransaction(req, res, next) {
     const validTransaction = createTransactionSchema.validate(transactionData, { abortEarly: false });
 
     if (validTransaction.error) {
-        console.log(validTransaction.error.details)
         return res.status(422).send({ message: 'Verifique as informações e tente novamente!' });
     }
 
