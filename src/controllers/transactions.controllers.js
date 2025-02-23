@@ -81,7 +81,19 @@ async function deleteTransaction(req, res) {
 
         return res.sendStatus(200);
     } catch (error) {
-        console.log(error)
+        return res.status(500).send({ message: 'Erro interno do servidor.' });
+    }
+}
+
+async function updateTransaction(req, res) {
+    const {id} = req.params;
+    const { transactionData } = res.locals;
+
+    try{
+        await db.collection('transactions').updateOne({ _id: new ObjectId(id) }, { $set: transactionData });
+
+        return res.sendStatus(200);
+    }catch (error) {
         return res.status(500).send({ message: 'Erro interno do servidor.' });
     }
 }
@@ -91,5 +103,6 @@ export {
     getTransactions,
     getTransactionsBalance,
     deleteTransaction,
+    updateTransaction,
 
 }
